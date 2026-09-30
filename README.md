@@ -4,11 +4,7 @@ Plataforma de pádel para los barrios de Nordelta: **liga de cada barrio → cop
 entre barrios → Mundial Norpadelta**. Web responsive, pensada primero para el
 celular.
 
-App independiente dentro de este repositorio (no comparte código ni build con la
-tienda de la raíz).
-
 ```bash
-cd norpadelta
 pnpm install
 pnpm dev        # http://localhost:3100
 pnpm test       # 67 tests: reglas, flujos críticos y esquema Postgres
@@ -59,5 +55,5 @@ docs/           producto, arquitectura y decisiones pendientes
 
 ## Despliegue
 
-Proyecto de Vercel separado con **Root Directory = `norpadelta`**. La demo guarda
+Proyecto de Vercel propio apuntando a este repositorio (Next.js, sin configuración extra). La demo guarda
 el estado en memoria de cada instancia; para el piloto hace falta Postgres.

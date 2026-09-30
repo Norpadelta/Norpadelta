@@ -1,8 +1,5 @@
 import type { NextConfig } from "next";
 
-const config: NextConfig = {
-  // App independiente dentro del repo: la raíz del proyecto es esta carpeta.
-  outputFileTracingRoot: __dirname,
-};
+const config: NextConfig = {};
 
 export default config;

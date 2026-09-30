@@ -51,6 +51,15 @@ Equipos o delegaciones de barrio para una copa se derivan de las convocatorias
 cubiertas (una por combinación); si hace falta una entidad propia (capitán,
 logística) se agrega en la Etapa 2.
 
+## Fotos de perfil
+
+Opcionales. El navegador recorta y achica la imagen (320 × 320, JPEG) antes de
+subirla; el servidor valida formato (JPG, PNG o WebP) y tamaño. Sólo se envían a
+usuarios registrados: visitantes sin sesión ven iniciales. El propio jugador la
+cambia o la quita; la administración (o el delegado de su barrio) puede quitarla
+con motivo registrado y aviso al jugador. En la demo se guardan en memoria; en
+producción, en Vercel Blob con la URL en `jugadores.foto_url`.
+
 ## Permisos
 
 `src/domain/permisos.ts`: `exigirAdminGeneral`, `exigirAdminDeBarrio` (admin

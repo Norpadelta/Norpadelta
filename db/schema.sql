@@ -58,6 +58,7 @@ create table jugadores (
   categoria categoria not null,
   residencia estado_validacion not null default 'pendiente',
   categoria_validada boolean not null default false,
+  foto_url text, -- opcional; sólo visible para usuarios registrados
   creado_en timestamptz not null default now()
 );
 

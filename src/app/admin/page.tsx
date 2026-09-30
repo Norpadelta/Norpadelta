@@ -20,6 +20,7 @@ import {
   Vacio,
   Volver,
 } from "@/ui/kit";
+import { Avatar } from "@/ui/avatar";
 import { CamposMarcador } from "@/ui/marcador-form";
 import { VistaConvocatoria } from "@/ui/convocatoria";
 
@@ -83,6 +84,7 @@ export default async function Admin() {
       .filter((p) => p.estado === "confirmado" && p.tipo === "liga")
       .reverse();
     const ligas = e.ligas.filter((l) => l.temporadaId === e.temporadaActualId);
+    const conFoto = e.jugadores.filter((j) => j.foto);
     return {
       e,
       ahora,
@@ -92,6 +94,7 @@ export default async function Admin() {
       inconclusos,
       confirmados,
       ligas,
+      conFoto,
     };
   });
 
@@ -155,7 +158,14 @@ export default async function Admin() {
             >
               <Volver a={V} />
               <input type="hidden" name="jugadorId" value={j.id} />
-              <p className="font-semibold">
+              <p className="flex items-center gap-2 font-semibold">
+                <Avatar
+                  persona={{
+                    nombre: `${j.nombre} ${j.apellido}`,
+                    foto: j.foto,
+                  }}
+                  tamaño="md"
+                />
                 {j.nombre} {j.apellido}
               </p>
               <p className="mb-3 text-xs text-suave">
@@ -571,6 +581,48 @@ export default async function Admin() {
                 </form>
               )}
             </div>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel id="fotos" titulo="Fotos de perfil" cantidad={d.conFoto.length}>
+        <p className="mb-3 text-sm text-suave">
+          Si una foto es inapropiada, quitala con un motivo: queda registrado y
+          se le avisa al jugador.
+        </p>
+        {d.conFoto.length === 0 && (
+          <p className="text-sm text-suave">Nadie subió foto todavía.</p>
+        )}
+        <div className="grid gap-2 sm:grid-cols-2">
+          {d.conFoto.map((j) => (
+            <form
+              key={j.id}
+              action={A.adminQuitarFoto}
+              className="flex items-center gap-3 rounded-xl bg-superficie-2 p-3"
+            >
+              <Volver a={`${V}#fotos`} />
+              <input type="hidden" name="jugadorId" value={j.id} />
+              <Avatar
+                persona={{ nombre: `${j.nombre} ${j.apellido}`, foto: j.foto }}
+                tamaño="md"
+              />
+              <div className="min-w-0 flex-1 space-y-1">
+                <p className="truncate text-sm font-medium">
+                  {j.nombre} {j.apellido}
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    name="motivo"
+                    required
+                    placeholder="Motivo"
+                    className="campo min-h-9 flex-1"
+                  />
+                  <button className="btn-peligro min-h-9 px-3 text-xs">
+                    Quitar
+                  </button>
+                </div>
+              </div>
+            </form>
           ))}
         </div>
       </Panel>

@@ -54,7 +54,8 @@ export default async function MiLiga({
       enCurso,
       modalidades: parejas.map((p) => p.modalidad),
       pareja,
-      vista: liga && pareja ? vistaLiga(e, liga, ahora, pareja) : undefined,
+      vista:
+        liga && pareja ? vistaLiga(e, liga, ahora, pareja, true) : undefined,
       proximoCorte: temporada?.proximoCorte ?? null,
     } as const;
   });

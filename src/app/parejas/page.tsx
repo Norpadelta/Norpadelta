@@ -2,7 +2,8 @@ import Link from "next/link";
 import * as A from "@/app/acciones";
 import { leer } from "@/data/store";
 import { idUsuarioActual, usuarioDe } from "@/data/sesion";
-import { NOMBRE_CATEGORIA, NOMBRE_MODALIDAD } from "@/data/vistas";
+import { integrantes, NOMBRE_CATEGORIA, NOMBRE_MODALIDAD } from "@/data/vistas";
+import { AvatarPareja } from "@/ui/avatar";
 import { nombreJugador, nombrePareja } from "@/domain/estado";
 import { parejaVigente } from "@/domain/parejas";
 import { calcularRanking } from "@/domain/ranking";
@@ -83,6 +84,7 @@ export default async function Parejas() {
           .map((p) => ({
             id: p.id,
             nombre: nombrePareja(e, p),
+            integrantes: integrantes(e, p, true),
             cat: NOMBRE_CATEGORIA[p.categoria],
             mod: NOMBRE_MODALIDAD[p.modalidad],
           }))
@@ -251,7 +253,10 @@ export default async function Parejas() {
               key={p.id}
               className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm"
             >
-              <span className="font-medium">{p.nombre}</span>
+              <span className="flex items-center gap-2 font-medium">
+                <AvatarPareja integrantes={p.integrantes} />
+                {p.nombre}
+              </span>
               <span className="text-xs text-suave">
                 {p.mod} · {p.cat}
               </span>

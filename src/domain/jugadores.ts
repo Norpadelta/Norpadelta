@@ -9,6 +9,7 @@ import {
 import { exigirAdminDeBarrio } from "./permisos";
 import type { Categoria, EstadoValidacion, Modalidad, Usuario } from "./types";
 import { CATEGORIAS, MODALIDADES } from "./types";
+import { validarFoto } from "./fotos";
 
 export interface DatosRegistro {
   nombre: string;
@@ -17,6 +18,8 @@ export interface DatosRegistro {
   barrioId: string;
   categoria: Categoria;
   modalidades: Modalidad[];
+  /** Foto de perfil opcional. */
+  foto?: string;
 }
 
 /** Alta de un jugador. Queda pendiente de validación de residencia y categoría. */
@@ -40,6 +43,8 @@ export function registrarJugador(
   if (modalidades.length === 0)
     throw new ReglaError("Elegí al menos una modalidad.");
 
+  const foto = d.foto?.trim() ? validarFoto(d.foto) : undefined;
+
   const usuarioId = nuevoId(e, "usr");
   const jugadorId = nuevoId(e, "jug");
   e.usuarios.push({
@@ -59,6 +64,7 @@ export function registrarJugador(
     modalidades,
     residencia: "pendiente",
     categoriaValidada: false,
+    ...(foto ? { foto } : {}),
     creadoEn: ahora,
   });
   return { usuarioId, jugadorId };

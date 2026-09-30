@@ -2,6 +2,7 @@ import { registrarse } from "@/app/acciones";
 import { leer } from "@/data/store";
 import { CATEGORIAS, MODALIDADES } from "@/domain/types";
 import { Aviso, Titulo } from "@/ui/kit";
+import { SubirFoto } from "@/ui/subir-foto";
 
 export const metadata = { title: "Registrate" };
 
@@ -21,6 +22,10 @@ export default function Registro() {
         validar tu perfil y no aparece en rankings ni listados.
       </p>
       <form action={registrarse} className="tarjeta grid gap-4 sm:grid-cols-2">
+        <fieldset className="sm:col-span-2">
+          <legend className="etiqueta">Foto de perfil</legend>
+          <SubirFoto nombre="" />
+        </fieldset>
         <label>
           <span className="etiqueta">Nombre</span>
           <input

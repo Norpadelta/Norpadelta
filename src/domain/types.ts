@@ -71,6 +71,8 @@ export interface Jugador {
   modalidades: Modalidad[];
   residencia: EstadoValidacion;
   categoriaValidada: boolean;
+  /** Foto de perfil opcional (imagen chica). Sólo la ven usuarios registrados. */
+  foto?: string;
   creadoEn: string;
   ficticio?: boolean;
 }

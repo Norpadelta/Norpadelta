@@ -5,6 +5,7 @@ import { Suspense, type ReactNode } from "react";
 import { leer } from "@/data/store";
 import { idUsuarioActual, usuarioDe } from "@/data/sesion";
 import { esAdminGeneral } from "@/domain/permisos";
+import { Avatar } from "@/ui/avatar";
 import { Flash } from "@/ui/flash";
 import { Marca } from "@/ui/marca";
 import { NavInferior, NavLateral, type ItemNav } from "@/ui/navegacion";
@@ -26,13 +27,15 @@ export const viewport: Viewport = {
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const uid = await idUsuarioActual();
-  const { usuario, barrio, sinLeer } = leer((e) => {
+  const { usuario, foto, esJugador, barrio, sinLeer } = leer((e) => {
     const u = usuarioDe(e, uid);
     const j = u?.jugadorId
       ? e.jugadores.find((x) => x.id === u.jugadorId)
       : undefined;
     return {
       usuario: u,
+      foto: j?.foto,
+      esJugador: !!j,
       barrio: j
         ? e.barrios.find((b) => b.id === j.barrioId)?.nombre
         : undefined,
@@ -84,12 +87,14 @@ export default async function Layout({ children }: { children: ReactNode }) {
             </Link>
             {usuario ? (
               <Link
-                href="/ingresar"
+                href={esJugador ? "/perfil" : "/ingresar"}
+                aria-label={esJugador ? "Mi perfil" : "Tu cuenta"}
                 className="flex items-center gap-2 rounded-full border border-borde py-1 pr-3 pl-1 text-sm hover:border-tenue"
               >
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-verde text-xs font-bold text-black">
-                  {usuario.nombre.charAt(0)}
-                </span>
+                <Avatar
+                  persona={{ nombre: usuario.nombre, foto }}
+                  className="ring-0"
+                />
                 <span className="hidden max-w-40 truncate sm:inline">
                   {usuario.nombre}
                 </span>

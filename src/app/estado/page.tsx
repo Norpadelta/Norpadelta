@@ -20,6 +20,7 @@ const SIMULADO = [
   "Los vencimientos se procesan al abrir cada pantalla (en producción, un proceso programado).",
   "Las convocatorias a copas se pueden simular desde la administración; no hay copas reales.",
   "Los avisos se ven sólo dentro de la app.",
+  "Las fotos de perfil se guardan junto con los datos de la demo (en memoria). En producción van a un almacenamiento de archivos.",
 ];
 
 const PENDIENTE = [

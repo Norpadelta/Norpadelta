@@ -8,6 +8,7 @@ import { COOKIE_USUARIO, idUsuarioActual, usuarioDe } from "@/data/sesion";
 import * as conv from "@/domain/convocatorias";
 import * as des from "@/domain/desafios";
 import { ReglaError, type Estado } from "@/domain/estado";
+import { cambiarFoto, quitarFoto } from "@/domain/fotos";
 import { registrarJugador, validarJugador } from "@/domain/jugadores";
 import { habilitarLiga } from "@/domain/ligas";
 import * as par from "@/domain/parejas";
@@ -135,6 +136,7 @@ export async function registrarse(fd: FormData) {
           barrioId: texto(fd, "barrioId"),
           categoria: texto(fd, "categoria") as Categoria,
           modalidades: fd.getAll("modalidades").map(String) as Modalidad[],
+          foto: texto(fd, "foto"),
         },
         ahora,
       ),
@@ -155,6 +157,28 @@ export async function registrarse(fd: FormData) {
     conMensaje("/mi-liga", {
       ok: "Te registraste. La administración va a validar tu residencia y categoría.",
     }),
+  );
+}
+
+// ------------------------------------------------------------------ Fotos
+
+export async function subirFoto(fd: FormData) {
+  await correr(fd, "Tu foto de perfil quedó guardada.", (e, _a, u) => {
+    const foto = texto(fd, "foto");
+    if (!foto) throw new ReglaError("Elegí una foto primero.");
+    cambiarFoto(e, u, foto);
+  });
+}
+
+export async function quitarMiFoto(fd: FormData) {
+  await correr(fd, "Quitaste tu foto de perfil.", (e, ahora, u) =>
+    quitarFoto(e, u, u?.jugadorId ?? "", "", ahora),
+  );
+}
+
+export async function adminQuitarFoto(fd: FormData) {
+  await correr(fd, "Foto quitada. Se le avisó al jugador.", (e, ahora, u) =>
+    quitarFoto(e, u, texto(fd, "jugadorId"), texto(fd, "motivo"), ahora),
   );
 }
 

@@ -51,7 +51,7 @@ export default async function Barrio({
       ),
     )
       .filter((l) => !!l)
-      .map((l) => vistaLiga(e, l!, ahora));
+      .map((l) => vistaLiga(e, l!, ahora, undefined, !!u));
     const parejas = e.parejas
       .filter((p) => p.barrioId === b.id && p.estado === "activa")
       .map((p) => ({

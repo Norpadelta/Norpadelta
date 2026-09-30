@@ -26,6 +26,21 @@ export function nombreLiga(
   return `${barrio} · ${NOMBRE_CATEGORIA[l.categoria]} · ${NOMBRE_MODALIDAD[l.modalidad]}`;
 }
 
+/** Integrantes de una pareja con su foto, sólo si quien mira está registrado. */
+export function integrantes(
+  e: Estado,
+  p: Pick<Pareja, "jugadorAId" | "jugadorBId">,
+  conFotos: boolean,
+) {
+  return [p.jugadorAId, p.jugadorBId].map((id) => {
+    const j = e.jugadores.find((x) => x.id === id);
+    return {
+      nombre: j ? `${j.nombre} ${j.apellido}` : "—",
+      foto: conFotos ? j?.foto : undefined,
+    };
+  });
+}
+
 export function nombreDe(e: Estado, parejaId: string) {
   const p = e.parejas.find((x) => x.id === parejaId);
   return p ? nombrePareja(e, p) : "—";
@@ -37,6 +52,7 @@ export function vistaLiga(
   liga: Liga,
   ahora: string,
   propia?: Pareja,
+  conFotos = false,
 ) {
   const filas = calcularRanking(e, liga.id).map((f) => {
     const p = e.parejas.find((x) => x.id === f.parejaId)!;
@@ -47,6 +63,7 @@ export function vistaLiga(
     return {
       ...f,
       nombre: nombrePareja(e, p),
+      integrantes: integrantes(e, p, conFotos),
       estado: p.estado,
       propia: propia?.id === p.id,
       motivos,

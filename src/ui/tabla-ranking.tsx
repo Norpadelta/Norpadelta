@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
+import { AvatarPareja, type Persona } from "./avatar";
 import { Etiqueta } from "./kit";
 
 export interface FilaVista {
@@ -10,6 +11,7 @@ export interface FilaVista {
   jugados: number;
   ganados: number;
   nombre: string;
+  integrantes?: Persona[];
   estado?: string;
   propia?: boolean;
 }
@@ -74,10 +76,18 @@ export function TablaRanking<F extends FilaVista>({
                 </td>
                 <td className="py-3 pr-2 align-top">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span
-                      className={clsx("font-medium", f.propia && "text-verde")}
-                    >
-                      {f.nombre}
+                    <span className="flex min-w-0 items-center gap-2">
+                      {f.integrantes && (
+                        <AvatarPareja integrantes={f.integrantes} />
+                      )}
+                      <span
+                        className={clsx(
+                          "font-medium",
+                          f.propia && "text-verde",
+                        )}
+                      >
+                        {f.nombre}
+                      </span>
                     </span>
                     {f.propia && <Etiqueta tono="verde">Tu pareja</Etiqueta>}
                     {f.estado === "disuelta" && <Etiqueta>Disuelta</Etiqueta>}
